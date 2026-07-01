@@ -47,7 +47,7 @@ if uploaded_file is not None:
         for idx, row in df.iterrows():
             baris = idx + 2  # Karena Excel baris 1 = header
             
-            # Data per baris untuk ceklis
+            # Data per baris untuk ceklis - pake dictionary biasa
             row_ceklis = {"Baris": baris}
             
             # Cek tiap kolom D-Q
@@ -87,8 +87,11 @@ if uploaded_file is not None:
             else:
                 status = "✅ Sesuai"
             
-            row_ceklis.insert(0, "Status", status)
-            ceklis_data.append(row_ceklis)
+            # Tambahkan status ke row_ceklis (pake cara baru, tanpa insert)
+            row_ceklis_with_status = {"Status": status}
+            row_ceklis_with_status.update(row_ceklis)
+            
+            ceklis_data.append(row_ceklis_with_status)
             status_data.append(status)
         
         # Buat DataFrame ceklis
@@ -135,7 +138,7 @@ if uploaded_file is not None:
         # Gabungkan data asli dengan hasil ceklis
         df_hasil = df.copy()
         
-        # Tambahkan kolom status dan hasil pengecekan
+        # Tambahkan kolom status
         df_hasil.insert(0, "Status", status_data)
         
         # Tambahkan kolom ceklis per kolom
